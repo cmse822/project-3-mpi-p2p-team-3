@@ -1,19 +1,20 @@
+/*
+
+Compile with: mpicxx -o Part1.exe Part1.cpp
+Execute with: mpiexec -n 2 Part1.exe 
+
+*/
+
 #include <iostream> 
 #include <stdio.h>
 #include <stdlib.h>
 #include <random>
+#include <fstream>
 #include "mpi.h" 
 
 using namespace std; 
 
 int main(int argc, char *argv[]){
-
-    // int numtasks, rank; 
-    // double start_time, end_time; 
-
-    // MPI_Init(&argc, &argv); 
-    // MPI_Comm_size(MPI_COMM_WORLD, &numtasks); 
-    // MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     MPI_Init(&argc, &argv);
 
@@ -30,11 +31,10 @@ int main(int argc, char *argv[]){
     uniform_real_distribution<> dis(0.0, 1.0); // Distribution for doubles between 0.0 and 1.0
 
 
-
     int comm_sizes[12]; 
     int iterations = 100;
-
     int warmup_epoch = 10;
+    ofstream out_file("Part1_Data.txt");
 
     int j = 2; 
     for(int i = 0; i < 12; ++i){
@@ -55,7 +55,6 @@ int main(int argc, char *argv[]){
         int node_tag2 = 2;
 
         // the first 10 loops are used for warmup
-
         for(int i = 0; i < warmup_epoch;i++) {
             if (rank == 0) {
                 MPI_Send(ptr, alloc_size, MPI_DOUBLE, 1, node_tag1, MPI_COMM_WORLD);
@@ -70,7 +69,7 @@ int main(int argc, char *argv[]){
 
         start_time = MPI_Wtime();
 
-        for(int i = 0; i < iterations;i++) {
+        for(int i = 0; i < iterations; i++) {
             if (rank == 0) {
                 MPI_Send(ptr, alloc_size, MPI_DOUBLE, 1, node_tag1, MPI_COMM_WORLD);
                 MPI_Recv(ptr, alloc_size, MPI_DOUBLE, 1, node_tag2, MPI_COMM_WORLD, &stat);
@@ -89,14 +88,14 @@ int main(int argc, char *argv[]){
             cout << "Message size: " << bytes << " bytes" << endl;
             cout << "Time Per transfer: " << elapsed_time / (2.0*(double)iterations) << " seconds" << endl;
             cout << "Bandwidth: " << (bytes * iterations) / (elapsed_time) << "byte/s" << endl;
+            out_file << bytes << "," <<elapsed_time / (2.0*(double)iterations) << endl;
         }
-
 
         delete[] ptr;
 
     }
-
-    // cout << "Runtime: " <<  end_time - start_time << endl; 
+ 
+    out_file.close();
     MPI_Finalize(); 
 
 
