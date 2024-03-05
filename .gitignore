@@ -1,0 +1,10 @@
+.github
+.github/
+
+# Executables
+*.exe
+*.out
+
+# Build artifacts
+build/
+bin/ 
