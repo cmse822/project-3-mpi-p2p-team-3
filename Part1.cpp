@@ -1,8 +1,6 @@
 /*
-
 Compile with: mpicxx -o Part1.exe Part1.cpp
 Execute with: mpiexec -n 2 Part1.exe 
-
 */
 
 #include <iostream> 
@@ -30,19 +28,22 @@ int main(int argc, char *argv[]){
     mt19937 gen(rd()); // Mersenne Twister 19937 generator, seeded with rd
     uniform_real_distribution<> dis(0.0, 1.0); // Distribution for doubles between 0.0 and 1.0
 
+    const int N  = 25;
 
-    int comm_sizes[12]; 
+    int comm_sizes[N]; 
     int iterations = 100;
     int warmup_epoch = 10;
+    
     ofstream out_file("Part1_Data.txt");
+    out_file << "Bytes,TransferTime,Bandwidth" << endl;
 
     int j = 2; 
-    for(int i = 0; i < 12; ++i){
+    for(int i = 0; i < N; ++i){
         comm_sizes[i] = j;
         j *= 2; 
     }
 
-    for (int i = 0; i < 12;i++){
+    for (int i = 0; i < N;i++){
         auto alloc_size = comm_sizes[i];
         double *ptr = new double[alloc_size];
 
@@ -66,7 +67,6 @@ int main(int argc, char *argv[]){
         }
 
         double start_time, stop_time;
-
         start_time = MPI_Wtime();
 
         for(int i = 0; i < iterations; i++) {
@@ -88,7 +88,7 @@ int main(int argc, char *argv[]){
             cout << "Message size: " << bytes << " bytes" << endl;
             cout << "Time Per transfer: " << elapsed_time / (2.0*(double)iterations) << " seconds" << endl;
             cout << "Bandwidth: " << (bytes * iterations) / (elapsed_time) << "byte/s" << endl;
-            out_file << bytes << "," <<elapsed_time / (2.0*(double)iterations) << endl;
+            out_file << bytes << "," << elapsed_time / (2.0*(double)iterations) << "," << (bytes * iterations) / (elapsed_time) <<  endl;
         }
 
         delete[] ptr;
@@ -97,8 +97,6 @@ int main(int argc, char *argv[]){
  
     out_file.close();
     MPI_Finalize(); 
-
-
 
     return 0; 
 }
