@@ -10,14 +10,19 @@ using namespace std;
 int main(int argc, char *argv[]){
     MPI_Init(&argc, &argv);
 
-	int size;
-	MPI_Comm_size(MPI_COMM_WORLD, &size);
-
-	int rank;
-	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  	int size;
+  	MPI_Comm_size(MPI_COMM_WORLD, &size);
+  
+  	int rank;
+  	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
 	// MPI_Status stat;
     MPI_Request send_request, recv_request;
+
+    char hostname[MPI_MAX_PROCESSOR_NAME];
+    int len;
+    MPI_Get_processor_name(hostname, &len);
+    cout << "Rank " << rank << " is running on node: " << hostname << endl;
 
     random_device rd;  // Provides a seed for the random number engine
     mt19937 gen(rd()); // Mersenne Twister 19937 generator, seeded with rd
@@ -62,12 +67,11 @@ int main(int argc, char *argv[]){
                 MPI_Irecv(ptr, alloc_size, MPI_DOUBLE, 0, node_tag1, MPI_COMM_WORLD, &send_request); // Using MPI_Irecv for non-blocking (returns immediately, does not wait for other processes)
                 MPI_Isend(ptr, alloc_size, MPI_DOUBLE, 0, node_tag2, MPI_COMM_WORLD, &recv_request); // Using MPI_Isend for non-blocking (returns immediately, does not wait for other processes)
             }
-
-            // Synchronizing both before starting next round
-            MPI_Wait(&send_request, MPI_STATUS_IGNORE);
-            MPI_Wait(&recv_request, MPI_STATUS_IGNORE);
-
         }
+        // Synchronizing both before starting next round
+        MPI_Wait(&send_request, MPI_STATUS_IGNORE);
+        MPI_Wait(&recv_request, MPI_STATUS_IGNORE);
+
 
         double start_time, stop_time;
 
@@ -83,11 +87,10 @@ int main(int argc, char *argv[]){
                 MPI_Isend(ptr, alloc_size, MPI_DOUBLE, 0, node_tag2, MPI_COMM_WORLD, &recv_request); // Using MPI_Isend for non-blocking (returns immediately, does not wait for other processes)
             }
 
-            // Synchronizing both before starting next round
-            MPI_Wait(&send_request, MPI_STATUS_IGNORE);
-            MPI_Wait(&recv_request, MPI_STATUS_IGNORE);
-
         }
+        // Synchronizing both before starting next round
+        MPI_Wait(&send_request, MPI_STATUS_IGNORE);
+        MPI_Wait(&recv_request, MPI_STATUS_IGNORE);
 
         stop_time = MPI_Wtime();
         double elapsed_time = stop_time - start_time;

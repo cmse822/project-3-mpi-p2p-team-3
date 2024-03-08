@@ -16,13 +16,19 @@ int main(int argc, char *argv[]){
 
     MPI_Init(&argc, &argv);
 
-	int size;
-	MPI_Comm_size(MPI_COMM_WORLD, &size);
+  	int size;
+  	MPI_Comm_size(MPI_COMM_WORLD, &size);
+  
+  	int rank;
+  	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  
+  	MPI_Status stat;
+   
+    char hostname[MPI_MAX_PROCESSOR_NAME];
+    int len;
+    MPI_Get_processor_name(hostname, &len);
+    cout << "Rank " << rank << " is running on node: " << hostname << endl;
 
-	int rank;
-	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-	MPI_Status stat;
 
     random_device rd;  // Provides a seed for the random number engine
     mt19937 gen(rd()); // Mersenne Twister 19937 generator, seeded with rd
@@ -89,6 +95,7 @@ int main(int argc, char *argv[]){
             cout << "Time Per transfer: " << elapsed_time / (2.0*(double)iterations) << " seconds" << endl;
             cout << "Bandwidth: " << (bytes * iterations) / (elapsed_time) << "byte/s" << endl;
             out_file << bytes << "," << elapsed_time / (2.0*(double)iterations) << "," << (bytes * iterations) / (elapsed_time) <<  endl;
+
         }
 
         delete[] ptr;
