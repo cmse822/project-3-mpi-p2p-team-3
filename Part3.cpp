@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
             cout << "Time Per transfer: " << elapsed_time / (2.0*(double)iterations) << " seconds" << endl;
             cout << "Bandwidth: " << (bytes * iterations) / (elapsed_time) << "byte/s" << endl;
         }
-        std::cout << std::endl;
+        
     }
     MPI_Finalize();
     return 0;
