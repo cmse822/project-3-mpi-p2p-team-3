@@ -51,4 +51,4 @@ The consistently higher bandwidth in non-blocking communication compared to bloc
 ## Part 3 
 
 ## Part 4
-
+<img src="Part4_analysis.png" alt="Bandwidth" width="50%"/>
