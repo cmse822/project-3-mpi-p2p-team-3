@@ -49,5 +49,12 @@ The latency in non-blocking case is less than the latency of the blocking case. 
 The consistently higher bandwidth in non-blocking communication compared to blocking aligns with our expectations, as it allows processes to operate more independently, enabling better utilization of available bandwidth / resources.
 
 ## Part 3 
+<img src="3_Bandwidth.png" alt="Bandwidth by Bytes" width="50%"/>
+
+<img src="3_Latency.png" alt="Transfer Time by Bytes" width="50%"/>
 
 ## Part 4
+
+<img src="4_bandwidth.png" alt="Bandwidth by Bytes" width="50%"/>
+<img src="4_latency.png" alt="Transfer Time by Bytes" width="50%"/>
+
