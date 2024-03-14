@@ -69,9 +69,13 @@ int main(int argc, char** argv) {
         long bytes = num_elements_per_process * sizeof(int);
 
         if (rank == 0) {
-            cout << "Message size: " << bytes << " bytes" << endl;
-            cout << "Time Per transfer: " << elapsed_time / (2.0*(double)iterations) << " seconds" << endl;
-            cout << "Bandwidth: " << (bytes * iterations) / (elapsed_time) << "byte/s" << endl;
+           // cout << "Message size: " << bytes << " bytes" << endl;
+           // cout << "Time Per transfer: " << elapsed_time / (2.0*(double)iterations) << " seconds" << endl;
+           // cout << "Bandwidth: " << (bytes * iterations) / (elapsed_time) << "byte/s" << endl;
+            cout << bytes << ",";
+            cout << elapsed_time / (2.0*(double)iterations) << ",";
+            cout << (bytes * iterations) / (elapsed_time) << endl;
+
         }
         
     }
