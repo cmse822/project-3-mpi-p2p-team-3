@@ -50,8 +50,14 @@ The consistently higher bandwidth in non-blocking communication compared to bloc
 
 ## Part 3 
 <img src="3_Bandwidth.png" alt="Bandwidth by Bytes" width="50%"/>
+As shown in the bandwidth figure above, the bandwidth decreases as the number of processes used are more. When the message size goes up, the bandwidth goes up as well for the blocking communication. The reason of this shape could be the increased complexity of managing more processes. In the blocking communication, each send and receive operation must be completed before processing, leading processes increases to wait for one another, especially in this ring shift pattern. When the number of processes increases, the total wait time accumulates because a message must pass through more nodes to complete the round. This increased waiting time can lead to lower overall bandwidth. 
+
+Larger message sizes typically lead to better bandwidth utilization. The network's capacity is better utilized when sending larger chunks of data, leading to higher bandwidth measurements. 
 
 <img src="3_Latency.png" alt="Transfer Time by Bytes" width="50%"/>
+As shown in the latency figure above, the latency is higher at bytes = 2 when more processes are used. Then, it dropped for message size of 4. It then take more latency when the message size get larger. The initial high latency at very small message sizes with more processes can be explained by the fixed overhead associated with each communication operation. This overhead is more obvious when the data transferred is minimal with more processes involved, and each processes add latency. 
+
+The drop at 4 bytes could be how MPI is built to handle the samll messages. As message sizes increases, the latency naturally increases due to the longer time required to transmit larger amounts of data across network. Each process adds a delay due to communicatio and processing time. 
 
 ## Part 4
 
