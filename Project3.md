@@ -50,17 +50,30 @@ The consistently higher bandwidth in non-blocking communication compared to bloc
 
 ## Part 3 
 <img src="3_Bandwidth.png" alt="Bandwidth by Bytes" width="50%"/>
-As shown in the bandwidth figure above, the bandwidth decreases as the number of processes used are more. When the message size goes up, the bandwidth goes up as well for the blocking communication. The reason of this shape could be the increased complexity of managing more processes. In the blocking communication, each send and receive operation must be completed before processing, leading processes increases to wait for one another, especially in this ring shift pattern. When the number of processes increases, the total wait time accumulates because a message must pass through more nodes to complete the round. This increased waiting time can lead to lower overall bandwidth. 
+As shown in the bandwidth vs message size figure above, the bandwidth decreases as the number of processes used are more. When the message size goes up, the bandwidth goes up as well for the blocking communication. The reason of this shape could be the increased complexity of managing more processes. In the blocking communication, each send and receive operation must be completed before processing, leading processes increases to wait for one another, especially in this ring shift pattern. When the number of processes increases, the total wait time accumulates because a message must pass through more nodes to complete the round. This increased waiting time can lead to lower overall bandwidth. 
 
 Larger message sizes typically lead to better bandwidth utilization. The network's capacity is better utilized when sending larger chunks of data, leading to higher bandwidth measurements. 
 
 <img src="3_Latency.png" alt="Transfer Time by Bytes" width="50%"/>
-As shown in the latency figure above, the latency is higher at bytes = 2 when more processes are used. Then, it dropped for message size of 4. It then take more latency when the message size get larger. The initial high latency at very small message sizes with more processes can be explained by the fixed overhead associated with each communication operation. This overhead is more obvious when the data transferred is minimal with more processes involved, and each processes add latency. 
+As shown in the latency figure above, the latency is higher at bytes = 2 when more processes are used. Then, it dropped for message size of 4. It then take more latency when the message size get larger. When 128 processes were used, the latency did not show much increase accross the increase of the message size. The initial high latency at very small message sizes with more processes can be explained by the fixed overhead associated with each communication operation. This overhead is more obvious when the data transferred is minimal with more processes involved, and each processes add latency. 
 
-The drop at 4 bytes could be how MPI is built to handle the samll messages. As message sizes increases, the latency naturally increases due to the longer time required to transmit larger amounts of data across network. Each process adds a delay due to communicatio and processing time. 
+The drop at 4 bytes could be how MPI is built to handle the samll messages. As message sizes increases, the latency naturally increases due to the longer time required to transmit larger amounts of data across network. Each process adds a delay due to communicatio and processing time. When more processes are used, efficient buffereing and pipeling can keep the increases minimal.  
 
 ## Part 4
 
 <img src="4_bandwidth.png" alt="Bandwidth by Bytes" width="50%"/>
+The graph showing bandwidth versus message size tells us two things about non-blocking communication. First, as we use more processes, the bandwidth gets lower. This happens because, although non-blocking communication lets us do work while messages are being sent or received, handling many messages at once can become tricky. The more processes there are, the more effort it takes to keep track of all the messages, which can slow things down, especially if the network gets too busy.
+Second, when we send bigger messages, the bandwidth increases. This is because with small messages, a lot of the time is taken up just getting the messages ready to send and dealing with them after they're received. But as messages get bigger, more of the time is spent actually sending data, which is more efficient and increases bandwidth.
+
+
 <img src="4_latency.png" alt="Transfer Time by Bytes" width="50%"/>
+When the number of processes used are not many, the latency genetly increases.  When we're not using many processes, latency - or the delay before a message is fully sent - slightly goes up. But when we use a lot of processes, the delay for the very small messages (like 2 bytes) starts off really high. Interestingly, for slightly bigger messages (4 and 8 bytes), this delay suddenly goes down a lot if we're using many processes. However, as we keep increasing the number of processes, the delay starts to climb again for these larger messages.
+
+This pattern is mainly because when there are a lot of processes trying to send and receive messages at the same time, the network can get clogged up, which makes things slower. When you've got lots of messages flying around, the basic work needed just to handle a message (regardless of its size) adds up and becomes a big deal. Then, after the drop in delay for slightly bigger messages, if we continue to add more processes, the delay goes up again. This is likely because the network is struggling with the traffic, and it's also more complicated to manage all those messages at the same time.
+
+<img src="34Bandwidth.png" alt="Transfer Time by Bytes" width="50%"/>
+
+<img src="34Latency.png" alt="Transfer Time by Bytes" width="50%"/>
+
+
 
