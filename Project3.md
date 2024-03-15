@@ -73,7 +73,7 @@ This pattern is mainly because when there are a lot of processes trying to send 
 
 <img src="34Bandwidth.png" alt="Transfer Time by Bytes" width="50%"/>
 
-<img src="34Latency.png" alt="Transfer Time by Bytes" width="50%"/>
+<img src="34Latency.png" alt="Latency" width="50%"/>
 
 
 
