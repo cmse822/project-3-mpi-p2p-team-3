@@ -72,8 +72,8 @@ When the number of processes used are not many, the latency genetly increases.  
 This pattern is mainly because when there are a lot of processes trying to send and receive messages at the same time, the network can get clogged up, which makes things slower. When you've got lots of messages flying around, the basic work needed just to handle a message (regardless of its size) adds up and becomes a big deal. Then, after the drop in delay for slightly bigger messages, if we continue to add more processes, the delay goes up again. This is likely because the network is struggling with the traffic, and it's also more complicated to manage all those messages at the same time.
 
 <img src="34Bandwidth.png" alt="Transfer Time by Bytes" width="50%"/>
-
-<img src="34Latency.png" alt="Latency" width="50%"/>
-
+The Bandwidth of the Blocking communication is much lower than te non-Blocking method. Higher bandwidth use in non-blocking method could because of the overlap of computation and communication.
+<img src="34Lantency.png" alt="Latency" width="50%"/>
+The latency of the two methods are also the same expect that at bytes =2 for blocking method, latency is very high.
 
 
