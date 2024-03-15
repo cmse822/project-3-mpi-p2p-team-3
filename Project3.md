@@ -74,6 +74,6 @@ This pattern is mainly because when there are a lot of processes trying to send 
 <img src="34Bandwidth.png" alt="Transfer Time by Bytes" width="50%"/>
 The Bandwidth of the Blocking communication is much lower than te non-Blocking method. Higher bandwidth use in non-blocking method could because of the overlap of computation and communication.
 <img src="34Lantency.png" alt="Latency" width="50%"/>
-The latency of the two methods are also the same expect that at bytes =2 for blocking method, latency is very high.
+The latency of the two methods are almost the same expect that at bytes =2 for blocking method, latency is very high.
 
 
